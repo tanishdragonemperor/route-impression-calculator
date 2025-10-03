@@ -270,9 +270,43 @@ The system uses the **Liang-Barsky line clipping algorithm** to determine what f
 ## Assumptions
 
 1. **Linear Movement**: Vehicles travel in straight lines between GPS pings
-2. **Rectangular Geofences**: Only axis-aligned rectangles supported (specified in requirements)
-3. **Sorted Timestamps**: GPS pings are automatically sorted if provided out of order
+2. **Planar Approximation**: Lat/lon coordinates treated as Cartesian for city-scale distances (acceptable error for urban areas)
+3. **Constant Speed**: Time is distributed linearly along route segments
+4. **Rectangular Geofences**: Only axis-aligned rectangles supported (specified in requirements)
+5. **Sorted Timestamps**: GPS pings are automatically sorted if provided out of order
 
+## Known Limitations
+
+1. **Geofence Shapes**: Only rectangular (axis-aligned) geofences supported
+2. **GPS Accuracy**: No consideration for GPS noise, accuracy, or smoothing
+3. **Projection**: No map projection used - may introduce small errors over large distances
+4. **Route Gaps**: Large time gaps between pings reduce interpolation accuracy
+5. **Speed Variations**: Assumes constant speed between pings (no acceleration/deceleration)
+6. **Real-time**: Not designed for real-time streaming data
+
+## If I Had More Time
+
+### Enhanced Geometry
+- **Polygon Geofences**: Support arbitrary polygon shapes using point-in-polygon algorithms
+- **Map Projections**: Use proper cartographic projections (UTM/State Plane) for accuracy
+- **Curved Routes**: Account for road network topology and realistic vehicle paths
+
+### Advanced Analytics  
+- **Speed Analysis**: Detect stops, acceleration, and speed-based impression weighting
+- **GPS Filtering**: Kalman filtering for noisy GPS data
+- **Route Optimization**: Suggest optimal routes for maximum impression generation
+
+### Visualization & UX
+- **Interactive Maps**: Leaflet/Mapbox integration showing routes and geofences
+- **Real-time Dashboard**: Live tracking with WebSocket updates
+- **Export Features**: CSV/PDF report generation
+- **Bulk Operations**: Process multiple files and campaigns simultaneously
+
+### Performance & Scale
+- **Database Integration**: PostgreSQL with PostGIS for spatial queries
+- **Caching**: Redis for frequently accessed calculations
+- **Streaming**: Handle large datasets with stream processing
+- **API Rate Limiting**: Production-ready rate limiting and authentication
 
 ## Development Time
 
@@ -282,5 +316,3 @@ The system uses the **Liang-Barsky line clipping algorithm** to determine what f
 - Backend implementation (API, algorithms, tests): 2 hours  
 - Frontend implementation (React components, styling): 1.5 hours
 - Integration, testing, and documentation: 1 hour
-
-The modular architecture allows for easy extension and the comprehensive test suite ensures reliability for production use.
